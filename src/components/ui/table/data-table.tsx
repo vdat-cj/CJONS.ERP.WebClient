@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
         <ScrollBar orientation='horizontal' />
       </ScrollArea>
 
-      <div className='flex flex-col items-center justify-end gap-2 space-x-2 py-4 sm:flex-row'>
+      <div className='flex flex-col items-center justify-end gap-2 space-x-2 sm:flex-row'>
         <div className='flex w-full items-center justify-between'>
           <div className='flex-1 text-sm text-muted-foreground'>
             {totalItems > 0 ? (
