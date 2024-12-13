@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: { domains: ['https://erp.cjolivenetworks.vn'] }
+}
 
-export default nextConfig;
+export default nextConfig
