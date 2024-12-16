@@ -19,7 +19,7 @@ async function getUsersData(query: QueryParameter) {
     params: {
       pageNumber: page,
       pageSize: limit,
-      searchText: search
+      keyword: search
     }
   })
   const { code, data } = res.data as ApiResponse<User[]>
