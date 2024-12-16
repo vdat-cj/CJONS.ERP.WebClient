@@ -1,6 +1,10 @@
 import { z } from 'zod'
 
+import { validationMessages } from '@/constants/messages'
+
+const messages = validationMessages.login
+
 export const loginSchema = z.object({
-  username: z.string({ required_error: 'Username is required!' }).min(1, 'Username is required!'),
-  password: z.string({ required_error: 'Password is required' }).min(1, 'Password is required!')
+  username: z.string({ required_error: messages.username.required }).min(1, messages.username.min),
+  password: z.string({ required_error: messages.password.required }).min(1, messages.username.min)
 })

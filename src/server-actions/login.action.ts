@@ -8,6 +8,7 @@ import axiosInstance from '@/lib/axios'
 import { ACCESS_TOKEN } from '@/configs/constants'
 import { ActionResponse, ApiResponse } from '@/@types'
 import handleActionError from '@/helpers/handleActionError'
+import { actionMessages } from '@/constants/messages'
 
 type LoginResponse = ApiResponse<{ token: string }>
 
@@ -21,7 +22,7 @@ const loginAction = async (formData: z.infer<typeof loginSchema>): Promise<Actio
     if (code !== 200 || !data?.token) {
       return {
         success: false,
-        error: message || 'Login failed'
+        error: message || actionMessages.login.error
       }
     }
 
