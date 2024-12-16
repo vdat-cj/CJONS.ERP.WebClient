@@ -13,6 +13,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 
 import { loginSchema } from '@/schemas'
 import { loginAction } from '@/server-actions'
+import { actionMessages } from '@/constants/messages'
 
 const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -32,17 +33,19 @@ const LoginForm: React.FC = () => {
 
       const result = await loginAction(values)
 
+      console.log(result)
+
       if (!result.success) {
         toast.error(result.error)
         return
       }
 
-      toast.success('Login successful!')
+      toast.success(actionMessages.login.success)
 
       router.push('/')
       router.refresh()
     } catch {
-      toast.error('An error occurred. Please try again later!')
+      toast.error(actionMessages.serverError)
     } finally {
       setIsLoading(false)
     }

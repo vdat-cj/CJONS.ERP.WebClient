@@ -1,5 +1,7 @@
-import { ActionResponse } from '@/@types'
 import axios from 'axios'
+
+import { ActionResponse } from '@/@types'
+import { actionMessages } from '@/constants/messages'
 
 const handleActionError = (error: unknown): ActionResponse<never> => {
   if (axios.isAxiosError(error)) {
@@ -8,17 +10,17 @@ const handleActionError = (error: unknown): ActionResponse<never> => {
       case 403:
         return {
           success: false,
-          error: 'You are not allowed to perform this action!'
+          error: error.response?.data?.message || actionMessages.noPermission
         }
       case 400:
         return {
           success: false,
-          error: 'Bad Request. Please check your input.'
+          error: error.response?.data?.message || actionMessages.badRequest
         }
       default:
         return {
           success: false,
-          error: error.response?.data?.message || 'An error occurred. Please try again later.'
+          error: error.response?.data?.message || actionMessages.serverError
         }
     }
   }
@@ -26,7 +28,7 @@ const handleActionError = (error: unknown): ActionResponse<never> => {
   // Fallback error handling if it's not an AxiosError
   return {
     success: false,
-    error: 'An error occurred. Please try again later.'
+    error: actionMessages.serverError
   }
 }
 
