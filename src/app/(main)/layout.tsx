@@ -12,15 +12,26 @@ import Loading from '@/components/shared/loading'
 import Header from '@/components/layout/header'
 import Footer from '@/components/layout/footer'
 
-const geistSans = localFont({
-  src: '../../../public/fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900'
-})
-const geistMono = localFont({
-  src: '../../../public/fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900'
+const cjFont = localFont({
+  src: [
+    {
+      path: '../../../public/fonts/CJFont/BodyLight.ttf',
+      weight: '300'
+    },
+    {
+      path: '../../../public/fonts/CJFont/BodyRegular.ttf',
+      weight: '400'
+    },
+    {
+      path: '../../../public/fonts/CJFont/TittleMedium.ttf',
+      weight: '500'
+    },
+    {
+      path: '../../../public/fonts/CJFont/TittleBold.ttf',
+      weight: '700'
+    }
+  ],
+  variable: '--font-cj'
 })
 
 export const metadata: Metadata = {
@@ -34,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${cjFont.variable} antialiased`}>
         <NuqsAdapter>
           <SidebarProvider>
             <AppSideBar />
