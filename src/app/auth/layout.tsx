@@ -1,20 +1,31 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import localFont from 'next/font/local'
 
 import '@public/styles/globals.css'
 
 import { Toaster } from '@/components/ui/sonner'
-import Image from 'next/image'
 
-const geistSans = localFont({
-  src: '../../../public/fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900'
-})
-const geistMono = localFont({
-  src: '../../../public/fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900'
+const cjFont = localFont({
+  src: [
+    {
+      path: '../../../public/fonts/CJFont/BodyLight.ttf',
+      weight: '300'
+    },
+    {
+      path: '../../../public/fonts/CJFont/BodyRegular.ttf',
+      weight: '400'
+    },
+    {
+      path: '../../../public/fonts/CJFont/TittleMedium.ttf',
+      weight: '500'
+    },
+    {
+      path: '../../../public/fonts/CJFont/TittleBold.ttf',
+      weight: '700'
+    }
+  ],
+  variable: '--font-cj'
 })
 
 export const metadata: Metadata = {
@@ -28,9 +39,7 @@ export default function AuthLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} flex h-screen w-screen items-center justify-center antialiased`}
-      >
+      <body className={`${cjFont.variable} flex h-screen w-screen items-center justify-center antialiased`}>
         <div className='bg-holder bg-auth-card-overlay fixed bottom-0 left-0 top-0'>
           <Image src='/images/bg/37.png' width={1920} height={1080} alt='Background Image' className='h-full' />
         </div>

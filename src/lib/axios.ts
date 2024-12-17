@@ -15,7 +15,7 @@ const agent = new https.Agent({
 
 // Axios Interceptor Instance
 const axiosInstance = axios.create({
-  baseURL: envServerConfig.DOMAIN_API,
+  baseURL: `${envServerConfig.DOMAIN_API}/api`,
   headers: {
     'Content-Type': 'application/json'
   },
