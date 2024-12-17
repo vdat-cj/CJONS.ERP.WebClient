@@ -3,7 +3,7 @@
 import { toast } from 'sonner'
 import { useEffect, useState } from 'react'
 import { LogOut } from 'lucide-react'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 // components
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -30,11 +30,11 @@ const UserNav: React.FC = () => {
           setUserInfo(data)
         }
       } catch {
-        redirect('/auth/login')
+        router.push('/auth/login')
       }
     }
     fetchInfo()
-  }, [])
+  }, [router])
 
   async function handleLogout() {
     const { success } = await logoutAction()
