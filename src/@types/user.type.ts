@@ -6,3 +6,15 @@ export type User = {
   dateRegister: Date | string
   dateLastAccess: Date | string
 }
+
+export type UserInfo = {
+  id: number
+  userName: string
+  memberName: string
+  memberImage: string
+  memberEmail: string
+  memberPhone: string
+  dateRegister: Date
+  dateLastModifiedAccess: Date
+  dateLastAccess: Date
+}

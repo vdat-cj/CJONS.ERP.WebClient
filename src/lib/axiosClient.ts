@@ -1,12 +1,11 @@
-'use server'
+'use client'
 
 import axios from 'axios'
 import https from 'https'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { ACCESS_TOKEN } from '@/configs/constants'
-import { envServerConfig } from '@/configs/envServer'
+import { envClientConfig } from '@/configs/envClient'
 
 // Create an HTTPS Agent that allows self-signed certificates
 const agent = new https.Agent({
@@ -15,21 +14,21 @@ const agent = new https.Agent({
 
 // Axios Interceptor Instance
 const axiosInstance = axios.create({
-  baseURL: `${envServerConfig.DOMAIN_API}/api`,
+  baseURL: `${envClientConfig.DOMAIN_API}/api`,
   headers: {
     'Content-Type': 'application/json'
   },
-  httpsAgent: agent // Use the agent to allow self-signed certificates
+  httpsAgent: agent, // Use the agent to allow self-signed certificates,
+  withCredentials: true
 })
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const cookieStore = cookies()
-    const token = cookieStore.get(ACCESS_TOKEN)
+    const token = localStorage.getItem(ACCESS_TOKEN)
 
     // If token is present, add it to request's Authorization Header
     if (token) {
-      if (config.headers) config.headers.Authorization = `Bearer ${token.value}`
+      if (config.headers) config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },

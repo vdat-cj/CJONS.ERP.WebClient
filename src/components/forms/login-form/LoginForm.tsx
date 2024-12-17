@@ -7,13 +7,17 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+// - components
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
-import { loginSchema } from '@/schemas'
+// - actions
 import { loginAction } from '@/server-actions'
+
+import { loginSchema } from '@/schemas'
 import { actionMessages } from '@/constants/messages'
+import { ACCESS_TOKEN } from '@/configs/constants'
 
 const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -31,14 +35,15 @@ const LoginForm: React.FC = () => {
     try {
       setIsLoading(true)
 
-      const result = await loginAction(values)
+      const { success, data, error } = await loginAction(values)
 
-      console.log(result)
-
-      if (!result.success) {
-        toast.error(result.error)
+      if (!success || !data) {
+        toast.error(error)
         return
       }
+
+      // save toke for client side using call api
+      localStorage.setItem(ACCESS_TOKEN, data.token)
 
       toast.success(actionMessages.login.success)
 

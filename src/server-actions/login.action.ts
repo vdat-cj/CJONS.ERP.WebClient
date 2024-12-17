@@ -12,7 +12,7 @@ import { actionMessages } from '@/constants/messages'
 
 type LoginResponse = ApiResponse<{ token: string }>
 
-const loginAction = async (formData: z.infer<typeof loginSchema>): Promise<ActionResponse<LoginResponse>> => {
+const loginAction = async (formData: z.infer<typeof loginSchema>): Promise<ActionResponse<{ token: string }>> => {
   try {
     const res = await axiosInstance.post('/auth/login', formData)
 
@@ -38,7 +38,7 @@ const loginAction = async (formData: z.infer<typeof loginSchema>): Promise<Actio
 
     return {
       success: true,
-      data: result
+      data
     }
   } catch (error) {
     return handleActionError(error)
