@@ -1,22 +1,27 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import { addUser } from '@/server-actions/user.action'
+
+// - components
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { userSchema } from '@/schemas'
+
+import { addUser } from '@/server-actions/user.action'
+import { actionMessages } from '@/constants/messages'
 import { USER_FIELDS } from './constant'
+import { userSchema } from '@/schemas'
+import { Role } from '@/@types'
 
 type UserFormProps = {
-  roles: { id: number; name: string }[]
+  roles: Role[]
 }
 
 const UserForm: React.FC<UserFormProps> = ({ roles }) => {
@@ -31,10 +36,14 @@ const UserForm: React.FC<UserFormProps> = ({ roles }) => {
     setIsLoading(true)
 
     const result = await addUser(values)
+
     if (!result.success) {
       toast.error(result.error)
+      setIsLoading(false)
       return
     }
+
+    toast.success(actionMessages.user.addSuccess)
     router.push('/user/list')
     router.refresh()
 
@@ -82,7 +91,7 @@ const UserForm: React.FC<UserFormProps> = ({ roles }) => {
                       <SelectContent>
                         {roles.map((role) => (
                           <SelectItem value={role.id.toString()} key={role.id}>
-                            {role.name}
+                            {role.roleName}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -93,7 +102,7 @@ const UserForm: React.FC<UserFormProps> = ({ roles }) => {
               />
             </div>
             <Button type='submit' className='w-full' disabled={isLoading}>
-              Gửi
+              Submit
             </Button>
           </form>
         </Form>

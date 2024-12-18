@@ -18,3 +18,9 @@ export type UserInfo = {
   dateLastModifiedAccess: Date
   dateLastAccess: Date
 }
+
+export type Role = {
+  id: number
+  roleName: string
+  roleDesc: string
+}
