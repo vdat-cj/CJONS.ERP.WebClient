@@ -7,9 +7,9 @@ import axiosInstance from '@/lib/axios'
 import { userSchema } from '@/schemas'
 import type { z } from 'zod'
 
-const addUser = async (formData: z.infer<typeof userSchema>): Promise<ActionResponse<null>> => {
+const addUser = async (formData: z.infer<typeof userSchema>, userCreatedId: number): Promise<ActionResponse<null>> => {
   try {
-    const { data: resData } = await axiosInstance.post('/users', JSON.stringify(formData))
+    const { data: resData } = await axiosInstance.post('/users', JSON.stringify({ ...formData, userCreatedId }))
 
     const result = resData as ApiResponse<User>
     const { code, message } = result

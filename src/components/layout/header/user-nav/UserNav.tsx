@@ -16,6 +16,7 @@ import { logoutAction } from '@/server-actions'
 import axiosInstance from '@/lib/axiosClient'
 import { ApiResponse, UserInfo } from '@/@types'
 import { envClientConfig } from '@/configs/envClient'
+import { USER_ID } from '@/configs/constants'
 
 const UserNav: React.FC = () => {
   const router = useRouter()
@@ -27,6 +28,7 @@ const UserNav: React.FC = () => {
         const res = await axiosInstance.get('/auth/profile')
         const { code, data } = res.data as ApiResponse<UserInfo>
         if (code === 200 && data) {
+          localStorage.setItem(USER_ID, data.id.toString())
           setUserInfo(data)
         }
       } catch {

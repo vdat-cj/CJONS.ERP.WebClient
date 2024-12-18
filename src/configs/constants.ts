@@ -1,6 +1,7 @@
 import { NavItem } from '@/@types/navItem.type'
 
 export const ACCESS_TOKEN = 'accessToken'
+export const USER_ID = 'userId'
 
 export const NAV_ITEMS: NavItem[] = [
   {
