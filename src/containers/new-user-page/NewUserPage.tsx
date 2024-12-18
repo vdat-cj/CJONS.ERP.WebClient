@@ -1,6 +1,11 @@
-import { ApiResponse, Role } from '@/@types'
-import UserForm from '@/components/forms/user-form'
+import { Suspense } from 'react'
+
+import UserFormSkeleton from '@/components/skeletons/user-form-skeleton'
+const UserForm = dynamic(() => import('@/components/forms/user-form'))
+
 import axiosInstance from '@/lib/axios'
+import { ApiResponse, Role } from '@/@types'
+import dynamic from 'next/dynamic'
 
 const getRoles = async () => {
   const res = await axiosInstance.get('/auth/roles')
@@ -13,7 +18,11 @@ const getRoles = async () => {
 
 const NewUserPage = async () => {
   const roles = await getRoles()
-  return <UserForm roles={roles} />
+  return (
+    <Suspense fallback={<UserFormSkeleton />}>
+      <UserForm roles={roles} />
+    </Suspense>
+  )
 }
 
 export default NewUserPage

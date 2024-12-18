@@ -18,16 +18,20 @@ export const validationMessages = {
       required: 'Password is required!',
       min: 'Password should be at least 1 character long!'
     },
+    confirmPassword: {
+      required: 'Confirm password is required!',
+      min: 'Confirm password should be at least 1 character long!'
+    },
     fullName: {
       required: 'Full name is required!',
       min: 'Full name must be at least 1 character long!'
     },
     email: {
-      required: 'Email address is required',
-      invalid: 'Invalid email format'
+      required: 'Email address is required!',
+      invalid: 'Invalid email format!'
     },
     roleId: {
-      required: 'Role ID is required'
+      required: 'Role ID is required!'
     }
   }
 } as const

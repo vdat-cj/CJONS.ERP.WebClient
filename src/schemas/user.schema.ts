@@ -11,3 +11,15 @@ export const userSchema = z.object({
   email: z.string({ required_error: messages.email.required }).email({ message: messages.email.invalid }),
   roleId: z.string({ required_error: messages.roleId.required })
 })
+
+export const changePasswordSchema = z
+  .object({
+    password: z.string({ required_error: messages.password.required }).min(1, messages.password.min),
+    confirmPassword: z
+      .string({ required_error: messages.confirmPassword.required })
+      .min(1, messages.confirmPassword.min)
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword']
+  })

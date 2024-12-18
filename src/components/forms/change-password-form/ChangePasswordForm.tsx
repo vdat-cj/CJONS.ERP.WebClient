@@ -1,0 +1,69 @@
+'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { useState } from 'react'
+
+// - components
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+
+import { CHANGE_PASSWORD_FIELDS } from './constant'
+import { changePasswordSchema } from '@/schemas'
+
+const ChangePasswordForm: React.FC = () => {
+  const form = useForm<z.infer<typeof changePasswordSchema>>({
+    resolver: zodResolver(changePasswordSchema)
+  })
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onSubmit = async (values: z.infer<typeof changePasswordSchema>) => {
+    setIsLoading(true)
+
+    console.log(values)
+
+    setIsLoading(false)
+  }
+
+  return (
+    <Card className='mx-auto w-full'>
+      <CardHeader>
+        <CardTitle className='text-left text-2xl font-bold'>Change Password</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+            {/* Information */}
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+              {CHANGE_PASSWORD_FIELDS.map((item) => (
+                <FormField
+                  key={item.name}
+                  control={form.control}
+                  name={item.name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{item.label}</FormLabel>
+                      <FormControl>
+                        <Input type={item.type} placeholder={item.placeholder} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+            <Button type='submit' className='w-full' disabled={isLoading}>
+              Submit
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  )
+}
+
+export default ChangePasswordForm
