@@ -14,28 +14,37 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-import { addUser } from '@/server-actions/user.action'
+import { updateUser } from '@/server-actions/user.action'
 import { actionMessages } from '@/constants/messages'
 import { EDIT_USER_FIELDS } from './constant'
-import { userSchema } from '@/schemas'
-import { Role } from '@/@types'
+import { UserWithIds, Role } from '@/@types'
+import { editUserSchema } from '@/schemas'
 
 type EditUserFormProps = {
   roles: Role[]
+  user: UserWithIds
 }
 
-const EditUserForm: React.FC<EditUserFormProps> = ({ roles }) => {
-  const form = useForm<z.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema)
+const EditUserForm: React.FC<EditUserFormProps> = ({ roles, user }) => {
+  const form = useForm<z.infer<typeof editUserSchema>>({
+    resolver: zodResolver(editUserSchema),
+    defaultValues: {
+      id: user.id,
+      memberId: user.memberId,
+      email: user.email,
+      fullName: user.fullName,
+      roleId: user.roleId.toString(),
+      userName: user.userName
+    }
   })
 
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
-  const onSubmit = async (values: z.infer<typeof userSchema>) => {
+  const onSubmit = async (values: z.infer<typeof editUserSchema>) => {
     setIsLoading(true)
 
-    const result = await addUser(values)
+    const result = await updateUser(values)
 
     if (!result.success) {
       toast.error(result.error)
@@ -43,7 +52,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ roles }) => {
       return
     }
 
-    toast.success(actionMessages.user.addSuccess)
+    toast.success(actionMessages.user.updateSuccess)
     router.push('/user/list')
     router.refresh()
 

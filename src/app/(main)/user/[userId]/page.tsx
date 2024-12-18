@@ -13,7 +13,7 @@ const EditUser: React.FC<EditUserProps> = ({ params }) => {
   return (
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>
-        <EditUserPage userId={params.userId} />
+        <EditUserPage userId={+params.userId} />
       </div>
     </PageContainer>
   )

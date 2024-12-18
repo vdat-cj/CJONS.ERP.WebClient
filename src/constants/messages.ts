@@ -45,7 +45,10 @@ export const actionMessages = {
     addSuccess: 'Add user successfully!',
     addFailed: 'Add user failed!',
     deleteSuccess: 'Delete user successfully!',
-    deleteFailed: 'Delete user failed!'
+    deleteFailed: 'Delete user failed!',
+    updateSuccess: 'Update user successfully!',
+    updateFailed: 'Update user failed!',
+    updatePasswordSuccess: 'Update password successfully'
   },
   noPermission: 'You are not allowed to perform this action!',
   badRequest: 'Bad Request. Please check your input.',

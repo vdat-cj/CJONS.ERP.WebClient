@@ -1,9 +1,11 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { useState } from 'react'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 // - components
 import { Input } from '@/components/ui/input'
@@ -13,18 +15,40 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 
 import { CHANGE_PASSWORD_FIELDS } from './constant'
 import { changePasswordSchema } from '@/schemas'
+import { actionMessages } from '@/constants/messages'
+import { updatePassword } from '@/server-actions/user.action'
 
-const ChangePasswordForm: React.FC = () => {
+type ChangePasswordFormProps = {
+  userId: number
+}
+
+const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ userId }) => {
   const form = useForm<z.infer<typeof changePasswordSchema>>({
-    resolver: zodResolver(changePasswordSchema)
+    resolver: zodResolver(changePasswordSchema),
+    defaultValues: {
+      userId: userId,
+      newPassword: '',
+      confirmNewPassword: ''
+    }
   })
 
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const onSubmit = async (values: z.infer<typeof changePasswordSchema>) => {
     setIsLoading(true)
 
-    console.log(values)
+    const result = await updatePassword(values)
+
+    if (!result.success) {
+      toast.error(result.error)
+      setIsLoading(false)
+      return
+    }
+
+    toast.success(actionMessages.user.updatePasswordSuccess)
+    form.reset()
+    router.push('/user/list')
 
     setIsLoading(false)
   }

@@ -22,9 +22,9 @@ const UserListPage: React.FC<UserListPageProps> = ({ data }) => {
     <PageContainer scrollable>
       <div className='space-y-4'>
         <div className='flex items-start justify-between'>
-          <Heading level={2}>{`User (${data.length})`}</Heading>
+          <Heading level={2}>{`User Management`}</Heading>
           <Link href={'/user/new'} className={cn(buttonVariants({ variant: 'default' }))}>
-            <Plus className='mr-2 h-4 w-4' /> Add New
+            <Plus className='mr-2 h-4 w-4' /> Add User
           </Link>
         </div>
         <Separator />

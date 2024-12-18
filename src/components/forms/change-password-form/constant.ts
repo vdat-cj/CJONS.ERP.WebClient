@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 const CHANGE_PASSWORD_FIELDS = [
-  { name: 'password' as const, label: 'Password', placeholder: 'Enter your password', type: 'password' },
+  { name: 'newPassword' as const, label: 'New Password', placeholder: 'Enter your new password', type: 'password' },
   {
-    name: 'confirmPassword' as const,
-    label: 'Confirm Password',
-    placeholder: 'Enter your confirm password',
+    name: 'confirmNewPassword' as const,
+    label: 'Confirm New Password',
+    placeholder: 'Enter your confirm new password',
     type: 'password'
   }
 ] as const

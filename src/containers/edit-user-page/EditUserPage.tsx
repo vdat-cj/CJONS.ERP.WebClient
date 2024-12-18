@@ -2,14 +2,15 @@ import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 
 import axiosInstance from '@/lib/axios'
-import { ApiResponse, Role, User } from '@/@types'
+import { ApiResponse, Role, UserWithIds } from '@/@types'
 
 import UserFormSkeleton from '@/components/skeletons/user-form-skeleton'
+import { redirect } from 'next/navigation'
 const ChangePasswordForm = dynamic(() => import('@/components/forms/change-password-form'))
 const EditUserForm = dynamic(() => import('@/components/forms/edit-user-form'))
 
 type EditUserPageProps = {
-  user: User
+  userId: number
 }
 
 const getRoles = async () => {
@@ -22,24 +23,28 @@ const getRoles = async () => {
 }
 
 const getUserById = async (id: number) => {
+  if (isNaN(id)) {
+    redirect('/user/list')
+  }
   const res = await axiosInstance.get(`/users/${id}`)
-  const { data } = res.data as ApiResponse<Role[]>
+  const { data } = res.data as ApiResponse<UserWithIds>
   if (!data) {
-    throw new Error('Failed to fetch user by id: ' + id)
+    redirect('/user/not-found')
   }
   return data
 }
 
-const EditUserPage: React.FC<EditUserPageProps> = async () => {
+const EditUserPage: React.FC<EditUserPageProps> = async ({ userId }) => {
   const roles = await getRoles()
+  const user = await getUserById(userId)
 
   return (
     <>
       <Suspense fallback={<UserFormSkeleton />}>
-        <EditUserForm roles={roles} />
+        <EditUserForm roles={roles} user={user} />
       </Suspense>
       <Suspense fallback={<UserFormSkeleton />}>
-        <ChangePasswordForm />
+        <ChangePasswordForm userId={userId} />
       </Suspense>
     </>
   )
