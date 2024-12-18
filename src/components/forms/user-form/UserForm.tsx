@@ -19,6 +19,7 @@ import { actionMessages } from '@/constants/messages'
 import { USER_FIELDS } from './constant'
 import { userSchema } from '@/schemas'
 import { Role } from '@/@types'
+import { USER_ID } from '@/configs/constants'
 
 type UserFormProps = {
   roles: Role[]
@@ -35,7 +36,8 @@ const UserForm: React.FC<UserFormProps> = ({ roles }) => {
   const onSubmit = async (values: z.infer<typeof userSchema>) => {
     setIsLoading(true)
 
-    const result = await addUser(values)
+    const userCreatedId = localStorage.getItem(USER_ID) ?? 0
+    const result = await addUser(values, +userCreatedId)
 
     if (!result.success) {
       toast.error(result.error)
