@@ -83,7 +83,7 @@ const deleteUser = async (userId: number): Promise<ActionResponse<null>> => {
     const result = resData as ApiResponse<User>
     const { code, message } = result
 
-    if (code !== 204) {
+    if (code !== 200) {
       return {
         success: false,
         error: message || actionMessages.user.deleteFailed
