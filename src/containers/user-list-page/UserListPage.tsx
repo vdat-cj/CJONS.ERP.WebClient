@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import PageContainer from '@/components/layout/page-container'
 import TableSkeleton from '@/components/skeletons/table-skeleton'
 import { User } from '@/@types'
+
 const UserTable = dynamic(() => import('@/components/tables/user-table'), { ssr: false })
 
 type UserListPageProps = {
@@ -18,7 +19,7 @@ const UserListPage: React.FC<UserListPageProps> = ({ data }) => {
     <PageContainer scrollable>
       <div className='space-y-4'>
         <div className='flex items-start justify-between'>
-          <Heading level={2}>{`User (${data.length})`}</Heading>
+          <Heading level={2}>{`User Management`}</Heading>
         </div>
         <Separator />
         <Suspense fallback={<TableSkeleton />}>

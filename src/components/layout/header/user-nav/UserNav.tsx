@@ -3,7 +3,7 @@
 import { toast } from 'sonner'
 import { useEffect, useState } from 'react'
 import { LogOut } from 'lucide-react'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 // components
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -16,6 +16,7 @@ import { logoutAction } from '@/server-actions'
 import axiosInstance from '@/lib/axiosClient'
 import { ApiResponse, UserInfo } from '@/@types'
 import { envClientConfig } from '@/configs/envClient'
+import { USER_ID } from '@/configs/constants'
 
 const UserNav: React.FC = () => {
   const router = useRouter()
@@ -27,14 +28,15 @@ const UserNav: React.FC = () => {
         const res = await axiosInstance.get('/auth/profile')
         const { code, data } = res.data as ApiResponse<UserInfo>
         if (code === 200 && data) {
+          localStorage.setItem(USER_ID, data.id.toString())
           setUserInfo(data)
         }
       } catch {
-        redirect('/auth/login')
+        router.push('/auth/login')
       }
     }
     fetchInfo()
-  }, [])
+  }, [router])
 
   async function handleLogout() {
     const { success } = await logoutAction()

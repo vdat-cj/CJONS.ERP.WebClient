@@ -44,7 +44,7 @@ export default function AuthLayout({
           <Image src='/images/bg/37.png' width={1920} height={1080} alt='Background Image' className='h-full' />
         </div>
         {children}
-        <Toaster position='top-right' />
+        <Toaster position='top-right' richColors />
       </body>
     </html>
   )

@@ -2,22 +2,24 @@
 
 import { cookies } from 'next/headers'
 
-import { ActionResponse } from '@/@types'
 import { ACCESS_TOKEN } from '@/configs/constants'
+import { ActionError, ActionSuccess } from '@/@types'
+import { actionMessages } from '@/constants/messages'
 
-const logoutAction = async (): Promise<ActionResponse<null>> => {
+const logoutAction = async (): Promise<ActionSuccess | ActionError> => {
   try {
     const cookieStore = cookies()
 
     cookieStore.delete(ACCESS_TOKEN)
 
     return {
-      success: true
+      success: true,
+      message: actionMessages.logout.success
     }
   } catch {
     return {
       success: false,
-      error: 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
+      message: actionMessages.serverError
     }
   }
 }

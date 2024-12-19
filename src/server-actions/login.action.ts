@@ -6,23 +6,23 @@ import { cookies } from 'next/headers'
 import { loginSchema } from '@/schemas'
 import axiosInstance from '@/lib/axios'
 import { ACCESS_TOKEN } from '@/configs/constants'
-import { ActionResponse, ApiResponse } from '@/@types'
+import { ActionError, ActionSuccessWithData, ApiResponse } from '@/@types'
 import handleActionError from '@/helpers/handleActionError'
 import { actionMessages } from '@/constants/messages'
 
-type LoginResponse = ApiResponse<{ token: string }>
-
-const loginAction = async (formData: z.infer<typeof loginSchema>): Promise<ActionResponse<{ token: string }>> => {
+const loginAction = async (
+  formData: z.infer<typeof loginSchema>
+): Promise<ActionSuccessWithData<{ token: string }> | ActionError> => {
   try {
     const res = await axiosInstance.post('/auth/login', formData)
 
-    const result = res.data as LoginResponse
+    const result = res.data as ApiResponse<{ token: string }>
     const { code, message, data } = result
 
     if (code !== 200 || !data?.token) {
       return {
         success: false,
-        error: message || actionMessages.login.error
+        message: message || actionMessages.login.error
       }
     }
 
@@ -38,6 +38,7 @@ const loginAction = async (formData: z.infer<typeof loginSchema>): Promise<Actio
 
     return {
       success: true,
+      message: message || actionMessages.login.success,
       data
     }
   } catch (error) {

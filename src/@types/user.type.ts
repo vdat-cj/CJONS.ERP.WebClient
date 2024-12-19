@@ -18,3 +18,14 @@ export type UserInfo = {
   dateLastModifiedAccess: Date
   dateLastAccess: Date
 }
+
+export type Role = {
+  id: number
+  roleName: string
+  roleDesc: string
+}
+
+export type UserWithIds = Omit<User, 'dateRegister' | 'dateLastAccess'> & {
+  roleId: number
+  memberId: number
+}

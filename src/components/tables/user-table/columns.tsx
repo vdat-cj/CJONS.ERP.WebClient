@@ -2,6 +2,7 @@
 
 import { User } from '@/@types'
 import { ColumnDef } from '@tanstack/react-table'
+import { CellAction } from './CellAction'
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -29,5 +30,9 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'dateLastAccess',
     header: 'Date Last Access',
     cell: ({ row }) => new Date(row.original.dateLastAccess).toLocaleDateString()
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => <CellAction userId={row.original.id} />
   }
 ]
