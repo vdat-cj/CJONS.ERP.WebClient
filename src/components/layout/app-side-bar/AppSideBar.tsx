@@ -47,10 +47,7 @@ const AppSidebar: React.FC = () => {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem key='Home'>
-              <SidebarMenuButton
-                tooltip={{ className: 'bg-white border ml-2 text-black', children: <span>Home</span> }}
-                asChild
-              >
+              <SidebarMenuButton tooltip={{ className: 'border ml-2 text-black', children: <span>Home</span> }} asChild>
                 <Link href='/'>
                   <ChartPie />
                   <span>Home</span>
@@ -71,11 +68,11 @@ const AppSidebar: React.FC = () => {
                         <SidebarMenuButton
                           key={menuItem.key}
                           tooltip={{
-                            className: cn('bg-white border-none ml-2'),
+                            className: cn('bg-inherit overflow-hidden border-none ml-1 text-black'),
                             children: (
-                              <div className={styles['tooltip-content']}>
+                              <div className={`${styles['tooltip-content']}`}>
                                 {menuItem.subMenu.map((subMenuItem) => (
-                                  <SidebarMenuSubButton key={subMenuItem.key} asChild>
+                                  <SidebarMenuSubButton className='hover:bg-primary' key={subMenuItem.key} asChild>
                                     <Link href={subMenuItem.url}>
                                       <span>{subMenuItem.title}</span>
                                     </Link>
@@ -117,7 +114,7 @@ const AppSidebar: React.FC = () => {
       <SidebarFooter className='flex h-16 items-center justify-center overflow-x-hidden overflow-y-hidden border-t p-0'>
         <SidebarGroup>
           <SidebarMenuButton
-            tooltip={{ className: 'bg-white border ml-2 text-black', children: <span>Collapsed View</span> }}
+            tooltip={{ className: 'border ml-2', children: <span>Collapsed View</span> }}
             onClick={toggleSidebar}
           >
             <ArrowLeftToLine className={cn(state == 'collapsed' && 'rotate-180 transition-transform duration-200')} />
