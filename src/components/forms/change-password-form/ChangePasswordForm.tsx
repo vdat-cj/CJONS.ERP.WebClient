@@ -17,6 +17,7 @@ import { CHANGE_PASSWORD_FIELDS } from './constant'
 import { changePasswordSchema } from '@/schemas'
 import { actionMessages } from '@/constants/messages'
 import { updatePassword } from '@/server-actions/user.action'
+import { handleServerErrors } from '@/helpers/handleServerErrors'
 
 type ChangePasswordFormProps = {
   userId: number
@@ -41,7 +42,10 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ userId }) => {
     const result = await updatePassword(values)
 
     if (!result.success) {
-      toast.error(result.error)
+      toast.error(result.message)
+      if (result.errors) {
+        handleServerErrors(result.errors, form.setError)
+      }
       setIsLoading(false)
       return
     }

@@ -16,8 +16,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { loginAction } from '@/server-actions'
 
 import { loginSchema } from '@/schemas'
-import { actionMessages } from '@/constants/messages'
 import { ACCESS_TOKEN } from '@/configs/constants'
+import { handleServerErrors } from '@/helpers/handleServerErrors'
 
 const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -32,28 +32,26 @@ const LoginForm: React.FC = () => {
   const router = useRouter()
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    try {
-      setIsLoading(true)
+    setIsLoading(true)
 
-      const { success, data, error } = await loginAction(values)
+    const result = await loginAction(values)
 
-      if (!success || !data) {
-        toast.error(error)
-        return
+    if (!result.success) {
+      toast.error(result.message)
+      if (result.errors) {
+        handleServerErrors(result.errors, form.setError)
       }
-
-      // save toke for client side using call api
-      localStorage.setItem(ACCESS_TOKEN, data.token)
-
-      toast.success(actionMessages.login.success)
-
-      router.push('/')
-      router.refresh()
-    } catch {
-      toast.error(actionMessages.serverError)
-    } finally {
-      setIsLoading(false)
+      return
     }
+
+    // save toke for client side using call api
+    localStorage.setItem(ACCESS_TOKEN, result.data.token)
+
+    toast.success(result.message)
+
+    setIsLoading(false)
+    router.push('/')
+    router.refresh()
   }
 
   return (

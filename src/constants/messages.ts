@@ -12,23 +12,27 @@ export const validationMessages = {
   user: {
     userName: {
       required: 'Username is required!',
-      min: 'Username should be at least 1 character long!'
+      min: 'Username should be at least 3 characters long!',
+      max: 'Username should be less than 50 characters long'
     },
     password: {
       required: 'Password is required!',
-      min: 'Password should be at least 1 character long!'
+      min: 'Password should be at least 6 character long!',
+      max: 'Password should be less than 100 characters long'
     },
     confirmPassword: {
       required: 'Confirm password is required!',
-      min: 'Confirm password should be at least 1 character long!'
+      min: 'Confirm password should be at least 1 character long!',
+      max: 'Confirm password should be less than 100 characters long'
     },
     fullName: {
       required: 'Full name is required!',
-      min: 'Full name must be at least 1 character long!'
+      max: 'Full name should be less than 100 characters long'
     },
     email: {
       required: 'Email address is required!',
-      invalid: 'Invalid email format!'
+      invalid: 'Invalid email format!',
+      max: 'Email should be less than 100 characters long'
     },
     roleId: {
       required: 'Role ID is required!'
@@ -40,6 +44,9 @@ export const actionMessages = {
   login: {
     success: 'Login successful!',
     error: 'Invalid username or password!'
+  },
+  logout: {
+    success: 'Logout successful!'
   },
   user: {
     addSuccess: 'Add user successfully!',

@@ -19,6 +19,7 @@ import { actionMessages } from '@/constants/messages'
 import { EDIT_USER_FIELDS } from './constant'
 import { UserWithIds, Role } from '@/@types'
 import { editUserSchema } from '@/schemas'
+import { handleServerErrors } from '@/helpers/handleServerErrors'
 
 type EditUserFormProps = {
   roles: Role[]
@@ -47,7 +48,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ roles, user }) => {
     const result = await updateUser(values)
 
     if (!result.success) {
-      toast.error(result.error)
+      toast.error(result.message)
+      if (result.errors) {
+        handleServerErrors(result.errors, form.setError)
+      }
       setIsLoading(false)
       return
     }

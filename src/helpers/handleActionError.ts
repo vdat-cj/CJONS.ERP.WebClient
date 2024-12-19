@@ -1,26 +1,27 @@
 import axios from 'axios'
 
-import { ActionResponse } from '@/@types'
 import { actionMessages } from '@/constants/messages'
+import { ActionError } from '@/@types'
 
-const handleActionError = (error: unknown): ActionResponse<never> => {
+const handleActionError = (error: unknown): ActionError => {
   if (axios.isAxiosError(error)) {
     // Handling AxiosError with specific error status
     switch (error.response?.status) {
       case 403:
         return {
           success: false,
-          error: error.response?.data?.message || actionMessages.noPermission
+          message: error.response?.data?.message || actionMessages.noPermission
         }
       case 400:
         return {
           success: false,
-          error: error.response?.data?.message || actionMessages.badRequest
+          message: error.response?.data?.message || actionMessages.badRequest,
+          errors: error.response?.data?.errors
         }
       default:
         return {
           success: false,
-          error: error.response?.data?.message || actionMessages.serverError
+          message: error.response?.data?.message || actionMessages.serverError
         }
     }
   }
@@ -28,7 +29,7 @@ const handleActionError = (error: unknown): ActionResponse<never> => {
   // Fallback error handling if it's not an AxiosError
   return {
     success: false,
-    error: actionMessages.serverError
+    message: actionMessages.serverError
   }
 }
 

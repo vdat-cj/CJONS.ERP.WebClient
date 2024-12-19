@@ -15,7 +15,6 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { actionMessages } from '@/constants/messages'
 import { deleteUser } from '@/server-actions/user.action'
 
 interface CellActionProps {
@@ -31,10 +30,10 @@ export const CellAction: React.FC<CellActionProps> = ({ userId }) => {
     setLoading(true)
     const result = await deleteUser(userId)
     if (!result.success) {
-      toast.error(result.error)
+      toast.error(result.message)
       return
     }
-    toast.success(actionMessages.user.deleteSuccess)
+    toast.success(result.message)
     setLoading(false)
     router.refresh()
   }

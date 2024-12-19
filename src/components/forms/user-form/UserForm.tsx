@@ -15,11 +15,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 import { addUser } from '@/server-actions/user.action'
-import { actionMessages } from '@/constants/messages'
 import { USER_FIELDS } from './constant'
 import { userSchema } from '@/schemas'
 import { Role } from '@/@types'
 import { USER_ID } from '@/configs/constants'
+import { handleServerErrors } from '@/helpers/handleServerErrors'
 
 type UserFormProps = {
   roles: Role[]
@@ -40,12 +40,15 @@ const UserForm: React.FC<UserFormProps> = ({ roles }) => {
     const result = await addUser(values, +userCreatedId)
 
     if (!result.success) {
-      toast.error(result.error)
+      toast.error(result.message)
+      if (result.errors) {
+        handleServerErrors(result.errors, form.setError)
+      }
       setIsLoading(false)
       return
     }
 
-    toast.success(actionMessages.user.addSuccess)
+    toast.success(result.message)
     router.push('/user/list')
     router.refresh()
 

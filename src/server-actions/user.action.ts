@@ -1,13 +1,16 @@
 'use server'
 
-import type { ActionResponse, ApiResponse, User } from '@/@types'
+import type { ActionError, ActionSuccess, ApiResponse, User } from '@/@types'
 import { actionMessages } from '@/constants/messages'
 import handleActionError from '@/helpers/handleActionError'
 import axiosInstance from '@/lib/axios'
 import { changePasswordSchema, editUserSchema, userSchema } from '@/schemas'
 import type { z } from 'zod'
 
-const addUser = async (formData: z.infer<typeof userSchema>, userCreatedId: number): Promise<ActionResponse<null>> => {
+const addUser = async (
+  formData: z.infer<typeof userSchema>,
+  userCreatedId: number
+): Promise<ActionSuccess | ActionError> => {
   try {
     const { data: resData } = await axiosInstance.post('/users', JSON.stringify({ ...formData, userCreatedId }))
 
@@ -17,20 +20,20 @@ const addUser = async (formData: z.infer<typeof userSchema>, userCreatedId: numb
     if (code !== 201) {
       return {
         success: false,
-        error: message || actionMessages.user.addFailed
+        message: message || actionMessages.user.addFailed
       }
     }
 
     return {
       success: true,
-      data: null
+      message: actionMessages.user.addSuccess
     }
   } catch (error) {
     return handleActionError(error)
   }
 }
 
-const updateUser = async (formData: z.infer<typeof editUserSchema>): Promise<ActionResponse<null>> => {
+const updateUser = async (formData: z.infer<typeof editUserSchema>): Promise<ActionSuccess | ActionError> => {
   try {
     const { data: resData } = await axiosInstance.put('/users', JSON.stringify({ ...formData }))
 
@@ -40,20 +43,20 @@ const updateUser = async (formData: z.infer<typeof editUserSchema>): Promise<Act
     if (code !== 200) {
       return {
         success: false,
-        error: message || actionMessages.user.addFailed
+        message: message || actionMessages.user.updateFailed
       }
     }
 
     return {
       success: true,
-      data: null
+      message: actionMessages.user.updateSuccess
     }
   } catch (error) {
     return handleActionError(error)
   }
 }
 
-const updatePassword = async (formData: z.infer<typeof changePasswordSchema>): Promise<ActionResponse<null>> => {
+const updatePassword = async (formData: z.infer<typeof changePasswordSchema>): Promise<ActionSuccess | ActionError> => {
   try {
     const { data: resData } = await axiosInstance.put('/auth/change-password', JSON.stringify({ ...formData }))
 
@@ -63,20 +66,20 @@ const updatePassword = async (formData: z.infer<typeof changePasswordSchema>): P
     if (code !== 200) {
       return {
         success: false,
-        error: message || actionMessages.user.addFailed
+        message: message || actionMessages.user.updateFailed
       }
     }
 
     return {
       success: true,
-      data: null
+      message: message || actionMessages.user.updateSuccess
     }
   } catch (error) {
     return handleActionError(error)
   }
 }
 
-const deleteUser = async (userId: number): Promise<ActionResponse<null>> => {
+const deleteUser = async (userId: number): Promise<ActionSuccess | ActionError> => {
   try {
     const { data: resData } = await axiosInstance.delete(`/users/${userId}`)
 
@@ -86,12 +89,13 @@ const deleteUser = async (userId: number): Promise<ActionResponse<null>> => {
     if (code !== 200) {
       return {
         success: false,
-        error: message || actionMessages.user.deleteFailed
+        message: message || actionMessages.user.deleteFailed
       }
     }
 
     return {
-      success: true
+      success: true,
+      message: actionMessages.user.deleteSuccess
     }
   } catch (error) {
     return handleActionError(error)

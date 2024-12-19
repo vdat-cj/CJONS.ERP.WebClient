@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic'
 
 const NewUserPage = dynamic(() => import('@/containers/new-user-page'))
 
+export const revalidate = false
+
 const NewUser: React.FC = () => {
   return (
     <PageContainer scrollable>
