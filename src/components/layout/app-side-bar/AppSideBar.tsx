@@ -32,6 +32,7 @@ import styles from './AppSideBar.module.scss'
 
 const AppSidebar: React.FC = () => {
   const { open, state, toggleSidebar } = useSidebar()
+
   return (
     <Sidebar collapsible='icon' className='overflow-x-hidden'>
       <SidebarHeader className='flex h-16 items-center justify-center border-b'>
@@ -47,7 +48,7 @@ const AppSidebar: React.FC = () => {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem key='Home'>
-              <SidebarMenuButton tooltip={{ className: 'border ml-2 text-black', children: <span>Home</span> }} asChild>
+              <SidebarMenuButton tooltip={{ className: 'border ml-2', children: <span>Home</span> }} asChild>
                 <Link href='/'>
                   <ChartPie />
                   <span>Home</span>
@@ -68,11 +69,11 @@ const AppSidebar: React.FC = () => {
                         <SidebarMenuButton
                           key={menuItem.key}
                           tooltip={{
-                            className: cn('bg-inherit overflow-hidden border-none ml-1 text-black'),
+                            className: cn('bg-inherit overflow-hidden border-none ml-1'),
                             children: (
                               <div className={`${styles['tooltip-content']}`}>
                                 {menuItem.subMenu.map((subMenuItem) => (
-                                  <SidebarMenuSubButton className='hover:bg-primary' key={subMenuItem.key} asChild>
+                                  <SidebarMenuSubButton key={subMenuItem.key} asChild>
                                     <Link href={subMenuItem.url}>
                                       <span>{subMenuItem.title}</span>
                                     </Link>
@@ -95,7 +96,7 @@ const AppSidebar: React.FC = () => {
                           {menuItem.subMenu.map((subMenuItem) => (
                             <SidebarMenuSubItem key={subMenuItem.key}>
                               <SidebarMenuSubButton asChild>
-                                <Link href={subMenuItem.url} className='ml-10'>
+                                <Link href={subMenuItem.url} className={cn('ml-10')}>
                                   <span>{subMenuItem.title}</span>
                                 </Link>
                               </SidebarMenuSubButton>

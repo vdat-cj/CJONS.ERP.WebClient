@@ -51,10 +51,16 @@ export const CellAction: React.FC<CellActionProps> = ({ userId }) => {
         <DropdownMenuContent align='end'>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={() => router.push(`/user/${userId}`)}>
+          <DropdownMenuItem
+            onClick={() => router.push(`/user/${userId}`)}
+            className='text-waring hover:text-waring focus:text-waring'
+          >
             <Edit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)} className='text-destructive'>
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+            className='text-destructive hover:text-destructive focus:text-destructive'
+          >
             <Trash className='mr-2 h-4 w-4' /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
